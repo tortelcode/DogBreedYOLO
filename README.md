@@ -40,7 +40,7 @@ cd DogBreedYOLO
 
 ## Installation
 
-1. Go to directory dog-breed-classification.
+1. Go to directory DogBreedYOLO.
 
 2. Open your terminal and go to your project directory
 
