@@ -35,7 +35,7 @@ Extract the folder (if you downloaded)
 Then run the ff. command in any terminal on your pc
 
 ```bash
-cd dog-breed-classification
+cd DogBreedYOLO
 ```
 
 ## Installation
