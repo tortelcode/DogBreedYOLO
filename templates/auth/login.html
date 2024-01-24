@@ -1,0 +1,33 @@
+{% extends 'auth/auth_layout.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% block content%}
+<div class="d-flex align-items-center justify-content-center mt-4">
+    <div class="login col-md-5">
+        <h1>Login</h1>
+        {% include "includes/alert.html" %}
+
+        <div class="links">
+            <a href="{{ url_for('login') }}" class="active">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+
+        <form action="{{ url_for('login') }}" method="post" class="form-group">
+            <div class="input-group px-2">
+                <label for="username">
+                    <i class="fas fa-user"></i>
+                </label>
+                <input type="text" name="username" class="form-control" placeholder="Username" id="username" required>
+            </div>
+            <div class="input-group px-2">
+                <label for="password">
+                    <i class="fas fa-lock"></i>
+                </label>
+                <input type="password" name="password" class="form-control" placeholder="Password" id="password"
+                    required>
+            </div>
+            <div class="msg">{{ msg }}</div>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'home/layout.html' %}
+
+{% block title %}Predictions{% endblock %}
+
+{% block content %}
+<div class="container-fluid bg-white my-2">
+    <h2>{{data.title}}</h2>
+    <div class="container-fluid">
+        <table class="table table-responsive table-striped" id="predictions">
+            <thead>
+                <tr>
+                    {% for column in data.columns %}
+                    <th scope="col">{{column|title}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- {% if data.rows %}
+                    {% for item in data.rows %}
+                        <tr>
+                            <th scope="col">{{item.Index + 1}}</th>
+                            <td>{{item.name|title}}</td>
+                            <td class="w-auto"><img class="img-fluid w-25 h-25" src="{{ url_for('load_image', filename=item.path) }}" alt=""></td>
+                            <td>{{item.result}}</td>
+                            <td>
+                                <a href="{{ url_for('load_image', filename=item.path) }}" class="link-primary">View Full Size</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %} -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(() => {
+        const api = '/api/get-predictions'
+
+        $('#predictions').DataTable({
+            ajax: {
+                url: api,
+                type: 'GET'
+            },
+            columns: [
+                {
+                    title: 'id',
+                    render: (data, type, item) => {
+                        return item[0]
+                    }
+                },
+                {
+                    title: 'top_one',
+                    render: (data, type, item) => {
+                        return item[1]
+                    }
+                },
+                {
+                    title: 'image',
+                    render: (data, type, item) => {
+                        return `<img class="img-fluid w-25 h-25" src="${item[2]}" alt="Unable to load image">`
+                    }
+                },
+                {
+                    title: 'confidence',
+                    render: (data, type, item) => {
+                        console.log(new Date(item[4]))
+                        return item[3]
+                    }
+                },
+                {
+                    render: (data, type, item) => {
+                        return `<a target="_blank" href="${item[2]}" class="link-primary">View Full Size</a>`
+                    }
+                },
+            ]
+        });
+    })
+</script>
+{% endblock %}

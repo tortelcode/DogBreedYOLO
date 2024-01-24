@@ -1,0 +1,117 @@
+{% extends 'home/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<div class="container bg-white p-2 my-4">
+  <h3 class="text-center mt-4 mb-4">Dog Breed Classification System</h3>
+  <p class="text-center">This innovative system is designed to automatically identify and categorize various dog breeds
+    from images, providing a valuable tool for both dog enthusiasts and professionals in the field.</p>
+</div>
+
+<div class="container my-4 bg-white p-2">
+  <div class="predict">
+    <form class="form-upload" action="/" id="form-upload" method="post" enctype="multipart/form-data" name="form1">
+      <div class="container text-center" id="capturing_object">
+        <video id="video" class="img-fluid rounded-3" width="500" height="600" autoplay></video>
+        <canvas id="canvas" class="img-fluid" width="500" height="600"></canvas>
+        <button id="retakeBtn" class="btn btn-primary w-100" type="button" id="switchCameraBtn">
+          <i class="fas fa-camera"></i> Retake
+        </button>
+        <button id="capture" type="button" class="btn btn-primary mt-2 mb-4 w-100"><i class="fas fa-camera"></i> Take
+          Picture</button>
+      </div>
+      <div class="p-2">
+        <h3>Upload a Dog Image</h3>
+      </div>
+      <div class="input-group">
+        <div class="custom-file">
+          <input type="file" name="file" class="form-control custom-file-input" id="inputfile" required>
+        </div>
+        <button class="btn btn-success" type="submit">Submit</button>
+      </div>
+      <!-- <input type="file" name="file" class="form-control-file mb-2" id="inputfile"> -->
+    </form>
+  </div>
+</div>
+<script>
+  $(document).ready(() => {
+    $("#retakeBtn").hide()
+    $("#canvas").hide()
+    $("#capturing_object").hide()
+    $("#retakeBtn").on("click", () => {
+      loadCamera()
+      $("#canvas").hide()
+      $("video").show()
+      $("#capture").show()
+      $("#retakeBtn").hide()
+    })
+  })
+</script>
+<script defer>
+  var imageUrl = ""
+  const video = document.getElementById('video')
+  const canvas = document.getElementById('canvas')
+  const captureButton = document.getElementById('capture')
+  const uploadForm = document.getElementById('form-upload')
+  const inputFile = document.querySelector("#inputfile")
+  const switchCamera = document.querySelector("#switchCameraBtn")
+
+  const startCamera = async (mode) => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          aspectRatio: [4, 3],
+          facingMode: mode,
+          width: 1280, height: 720
+        }
+      });
+      video.srcObject = stream;
+      $("#capturing_object").show()
+    } catch (error) {
+      console.error('Error accessing the camera:', error);
+    }
+  }
+  const isWindows = navigator.userAgent.includes("Windows")
+  const loadCamera = () => {
+    if (isWindows) {
+      startCamera("user")
+    } else {
+      startCamera("environment")
+    }
+  }
+  loadCamera()
+
+
+  captureButton.addEventListener('click', () => {
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.toBlob(async (blob) => {
+      const file = new File([blob], 'captured_image.png', { type: 'image/png' });
+      const fileList = new DataTransfer()
+      fileList.items.add(file)
+      inputFile.files = fileList.files
+      video.srcObject = null
+      imageUrl = URL.createObjectURL(file)
+      if ($("#tmpimg").length > 0) {
+        $("#tmpimg").val(imageUrl)
+        console.log("exists")
+      } else {
+        $("#form-upload").append(
+          `<input id="tmpimg" name="img" value="${imageUrl}" hidden />`
+        )
+      }
+      $("video").hide()
+      $("#retakeBtn").show()
+      $("#retakeBtn").show()
+      $("#canvas").show()
+      $("#capture").hide()
+      $("#canvas").src = imageUrl
+
+      // await Promise.resolve((r) => setTimeout(r, 1300))
+      // uploadForm.submit()
+
+    }, 'image/png');
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'home/layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container my-2 bg-light border border-1 p-2">
+    <div class="container-fluid">
+        <h2>Profile Page</h2>
+        <p>Your account details are below:</p>
+        <table>
+            <tr>
+                <td>Username: {{ account[1] }}</td>
+            </tr>
+            <tr>
+                <td>Password: ******</td>
+            </tr>
+            <tr>
+                <td>Email: {{ account[2] }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}
