@@ -27,7 +27,7 @@ Firebase
 Clone the repository or Download the zip
 
 ```bash
-git clone https://github.com/itechto2019/dog-breed-classification.git](https://github.com/itechto2019/dog-breed-classification.git
+git clone https://github.com/tortelcode/DogBreedYOLO.git
 ```
 
 Extract the folder (if you downloaded)
